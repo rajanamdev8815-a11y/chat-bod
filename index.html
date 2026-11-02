@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova AI - Smart Chatbot</title>
+
+<style>
+:root {
+  --bg:#f5f6fa;
+  --panel:#ffffff;
+  --text:#202333;
+  --muted:#777e91;
+  --border:#e6e8ef;
+  --accent:#6957e8;
+  --soft:#eeeaff;
+  --user:#6957e8;
+  --shadow:0 8px 30px rgba(30,35,70,.06);
+}
+body.dark {
+  --bg:#11131c;
+  --panel:#1a1d29;
+  --text:#f1f2f8;
+  --muted:#a0a5b8;
+  --border:#303446;
+  --accent:#9585ff;
+  --soft:#292442;
+  --user:#5544c8;
+  --shadow:0 8px 30px rgba(0,0,0,.15);
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:Inter,Arial,sans-serif;height:100vh;overflow:hidden;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;height:100vh;width:100%}
+.sidebar{
+ width:270px;background:var(--panel);
+ border-right:1px solid var(--border);
+ display:flex;flex-direction:column;padding:20px;
+ flex-shrink:0;z-index:5;
+}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:25px}
+.logo{
+ width:39px;height:39px;border-radius:13px;
+ display:grid;place-items:center;color:white;font-size:21px;
+ background:linear-gradient(135deg,#7966ff,#a34fe9);
+}
+.brand h2{font-size:19px;margin:0}
+.brand small{color:var(--muted);font-size:11px}
+.new-chat{
+ background:var(--accent);color:white;border:0;
+ padding:13px;border-radius:11px;font-weight:600;
+ margin-bottom:22px;
+}
+.section-title{
+ color:var(--muted);font-size:11px;font-weight:700;
+ letter-spacing:1px;margin:8px 0 12px;
+}
+.history{overflow-y:auto;flex:1}
+.history-item{
+ display:flex;align-items:center;gap:9px;
+ padding:11px;border-radius:9px;cursor:pointer;
+ color:var(--muted);font-size:13px;margin-bottom:4px;
+}
+.history-item:hover,.history-item.active{
+ background:var(--soft);color:var(--text);
+}
+.history-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.delete-chat{border:0;background:none;color:var(--muted)}
+.sidebar-bottom{border-top:1px solid var(--border);padding-top:15px}
+.side-btn{
+ width:100%;padding:11px;background:none;border:0;
+ color:var(--muted);text-align:left;border-radius:9px;
+}
+.side-btn:hover{background:var(--soft);color:var(--text)}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{
+ height:70px;background:var(--panel);
+ border-bottom:1px solid var(--border);
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 25px;gap:12px;
+}
+.top-left{display:flex;align-items:center;gap:12px}
+.topbar h3{margin:0;font-size:16px}
+.model-select{
+ background:var(--bg);color:var(--text);
+ border:1px solid var(--border);padding:9px;
+ border-radius:9px;max-width:210px;
+}
+.top-actions{display:flex;gap:8px}
+.icon-btn{
+ width:38px;height:38px;border:1px solid var(--border);
+ border-radius:10px;background:var(--panel);color:var(--text);
+}
+.chat-area{
+ flex:1;overflow-y:auto;padding:30px 16px;
+ scroll-behavior:smooth;
+}
+.messages{max-width:850px;margin:auto}
+.welcome{text-align:center;padding:12vh 10px 30px}
+.welcome-logo{
+ width:68px;height:68px;margin:auto auto 18px;
+ border-radius:23px;background:var(--soft);
+ display:grid;place-items:center;font-size:34px;
+}
+.welcome h1{font-size:30px;margin:0 0 10px}
+.welcome p{color:var(--muted);font-size:14px}
+.suggestions{
+ display:grid;grid-template-columns:repeat(2,1fr);
+ gap:12px;max-width:570px;margin:28px auto;
+}
+.suggestion{
+ text-align:left;padding:15px;background:var(--panel);
+ border:1px solid var(--border);border-radius:13px;
+ color:var(--text);font-size:13px;
+}
+.suggestion:hover{border-color:var(--accent)}
+.message{
+ display:flex;gap:12px;margin:20px 0;
+ align-items:flex-start;
+}
+.avatar{
+ width:34px;height:34px;flex-shrink:0;
+ border-radius:11px;display:grid;place-items:center;
+ background:var(--soft);font-size:17px;
+}
+.message.user .avatar{background:var(--accent);color:white}
+.content{min-width:0;flex:1}
+.name{font-size:12px;font-weight:700;margin:2px 0 8px}
+.bubble{
+ font-size:14px;line-height:1.75;
+ overflow-wrap:anywhere;
+}
+.message.user .bubble{
+ display:inline-block;background:var(--user);
+ color:white;padding:11px 15px;border-radius:14px;
+}
+.bubble pre{
+ background:#171923;color:#eee;padding:14px;
+ border-radius:10px;overflow:auto;
+}
+.bubble code{background:var(--soft);padding:2px 5px;border-radius:4px}
+.bubble pre code{background:none;padding:0}
+.bubble p{margin:0 0 10px}
+.bubble ul,.bubble ol{padding-left:22px}
+.actions{display:flex;gap:8px;margin-top:8px}
+.action-btn{
+ border:0;background:none;color:var(--muted);
+ font-size:12px;padding:5px;
+}
+.action-btn:hover{color:var(--accent)}
+.typing{color:var(--muted);font-size:13px;padding:12px}
+.composer-wrap{
+ background:var(--bg);padding:12px 18px 18px;
+}
+.composer{
+ max-width:850px;margin:auto;background:var(--panel);
+ border:1px solid var(--border);border-radius:17px;
+ box-shadow:var(--shadow);padding:12px;
+}
+#prompt{
+ width:100%;border:0;outline:0;resize:none;
+ min-height:50px;max-height:150px;
+ color:var(--text);background:transparent;
+ font-size:14px;padding:8px;
+}
+.composer-bottom{
+ display:flex;justify-content:space-between;align-items:center;
+}
+.composer-bottom small{color:var(--muted);font-size:11px}
+.send-btn{
+ border:0;background:var(--accent);color:white;
+ width:42px;height:40px;border-radius:11px;font-size:18px;
+}
+.send-btn:disabled{opacity:.5;cursor:not-allowed}
+.footer-note{text-align:center;color:var(--muted);font-size:10px;margin-top:10px}
+.modal-backdrop{
+ position:fixed;inset:0;background:#0008;
+ display:none;align-items:center;justify-content:center;
+ z-index:20;padding:15px;
+}
+.modal-backdrop.show{display:flex}
+.modal{
+ width:100%;max-width:430px;background:var(--panel);
+ border:1px solid var(--border);border-radius:18px;
+ padding:22px;box-shadow:var(--shadow);
+}
+.modal h2{margin:0 0 7px;font-size:19px}
+.modal p{color:var(--muted);font-size:12px;line-height:1.6}
+.field{margin-top:18px}
+.field label{display:block;font-size:12px;font-weight:600;margin-bottom:8px}
+.field input{
+ width:100%;padding:12px;border-radius:9px;
+ border:1px solid var(--border);background:var(--bg);
+ color:var(--text);outline:0;
+}
+.modal-buttons{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}
+.modal-buttons button{padding:10px 15px;border-radius:9px;border:1px solid var(--border)}
+.primary{background:var(--accent)!important;color:white!important;border:0!important}
+#toast{
+ position:fixed;bottom:25px;left:50%;transform:translateX(-50%);
+ background:#242434;color:white;padding:11px 18px;
+ border-radius:10px;font-size:13px;display:none;z-index:50;
+}
+.menu-btn{display:none}
+@media(max-width:700px){
+ .sidebar{
+ position:fixed;left:-280px;top:0;bottom:0;
+ transition:.25s;box-shadow:var(--shadow);
+ }
+ .sidebar.open{left:0}
+ .menu-btn{display:block}
+ .topbar{padding:0 12px;height:62px}
+ .topbar h3{font-size:14px}
+ .model-select{max-width:145px;font-size:11px}
+ .chat-area{padding:15px 12px}
+ .welcome{padding-top:9vh}
+ .welcome h1{font-size:24px}
+ .suggestions{grid-template-columns:1fr}
+ .composer-wrap{padding:8px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="logo">✦</div>
+  <div><h2>Nova AI</h2><small>Powered by Groq</small></div>
+ </div>
+
+ <button class="new-chat" onclick="newChat()">＋ New Chat</button>
+ <div class="section-title">YOUR CHATS</div>
+ <div class="history" id="history"></div>
+
+ <div class="sidebar-bottom">
+  <button class="side-btn" onclick="openSettings()">⚙ API Settings</button>
+  <button class="side-btn" onclick="toggleTheme()">◐ Appearance</button>
+  <button class="side-btn" onclick="clearAllChats()">⌫ Clear All Chats</button>
+ </div>
+</aside>
+
+<main class="main">
+ <header class="topbar">
+  <div class="top-left">
+   <button class="icon-btn menu-btn" onclick="toggleSidebar()">☰</button>
+   <h3>AI Assistant</h3>
+  </div>
+  <div class="top-actions">
+   <select class="model-select" id="modelSelect" title="Select AI Model">
+    <optgroup label="GPT Style Models">
+     <option value="openai/gpt-oss-20b">GPT OSS 20B</option>
+     <option value="openai/gpt-oss-120b">GPT OSS 120B</option>
+    </optgroup>
+    <optgroup label="Llama Models">
+     <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
+     <option value="llama-3.1-8b-instant">Llama 3.1 8B</option>
+    </optgroup>
+   </select>
+   <button class="icon-btn" onclick="openSettings()" title="Settings">⚙</button>
+   <button class="icon-btn" onclick="toggleTheme()" title="Theme">☼</button>
+  </div>
+ </header>
+
+ <section class="chat-area" id="chatArea">
+  <div class="messages" id="messages">
+   <div class="welcome" id="welcome">
+    <div class="welcome-logo">✦</div>
+    <h1>What can I help you with?</h1>
+    <p>Your intelligent AI assistant, powered by Groq.</p>
+    <div class="suggestions">
+     <button class="suggestion" onclick="useSuggestion('Explain artificial intelligence in simple words')">💡 Explain AI in simple words</button>
+     <button class="suggestion" onclick="useSuggestion('Write a professional website using HTML CSS and JavaScript')">💻 Build a website</button>
+     <button class="suggestion" onclick="useSuggestion('Teach me JavaScript step by step')">📚 Learn JavaScript</button>
+     <button class="suggestion" onclick="useSuggestion('Give me five creative business ideas')">🚀 Creative ideas</button>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="composer-wrap">
+  <div class="composer">
+   <textarea id="prompt" placeholder="Message Nova AI..." rows="2"></textarea>
+   <div class="composer-bottom">
+    <small>Enter to send · Shift + Enter for new line</small>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
+   </div>
+  </div>
+  <div class="footer-note">AI can make mistakes. Check important information.</div>
+ </div>
+</main>
+</div>
+
+<!-- API SETTINGS -->
+<div class="modal-backdrop" id="settingsModal">
+ <div class="modal">
+  <h2>⚙ API Settings</h2>
+  <p>Enter your Groq API key to connect your AI assistant.</p>
+
+  <div class="field">
+   <label for="apiKey">Groq API Key</label>
+   <input id="apiKey" type="password" placeholder="gsk_..." autocomplete="off">
+  </div>
+
+  <div class="field">
+   <label><input type="checkbox" id="showKey" onchange="toggleKeyVisibility()"> Show API Key</label>
+  </div>
+
+  <div class="field">
+   <label><input type="checkbox" id="rememberKey"> Save key on this device</label>
+  </div>
+
+  <p>Do not share your API key. Browser-based websites cannot keep a key secret from their users.</p>
+
+  <div class="modal-buttons">
+   <button onclick="closeSettings()">Cancel</button>
+   <button onclick="removeKey()">Remove Key</button>
+   <button class="primary" onclick="saveKey()">Save Key</button>
+  </div>
+ </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+
+const SYSTEM_PROMPT = `You are Nova AI, a helpful and intelligent assistant.
+Always reply in the language used by the user.
+Support Hindi and English.
+Be friendly, accurate and clear.
+When writing code, provide complete working code when requested.
+Use readable formatting.`;
+
+let chats = [];
+let currentChatId = null;
+let busy = false;
+
+const $ = id => document.getElementById(id);
+
+function getKey(){
+ return sessionStorage.getItem("nova_api_key") ||
+        localStorage.getItem("nova_api_key") || "";
+}
+
+function toast(message){
+ const el=$("toast");
+ el.textContent=message;
+ el.style.display="block";
+ clearTimeout(window.toastTimer);
+ window.toastTimer=setTimeout(()=>el.style.display="none",2600);
+}
+
+function saveChats(){
+ try{
+  localStorage.setItem("nova_chats",JSON.stringify(chats));
+ }catch(e){
+  toast("Chat storage is full. Delete some old chats.");
+ }
+}
+
+function loadChats(){
+ try{
+  chats=JSON.parse(localStorage.getItem("nova_chats")||"[]");
+  if(!Array.isArray(chats))chats=[];
+ }catch(e){chats=[];}
+
+ if(chats.length){
+  currentChatId=chats[0].id;
+  renderHistory();
+  renderMessages();
+ }else{
+  newChat();
+ }
+}
+
+function newChat(){
+ currentChatId=Date.now().toString();
+ chats.unshift({
+  id:currentChatId,
+  title:"New Chat",
+  messages:[],
+  time:Date.now()
+ });
+ saveChats();
+ renderHistory();
+ renderMessages();
+ $("sidebar").classList.remove("open");
+ $("prompt").focus();
+}
+
+function currentChat(){
+ return chats.find(c=>c.id===currentChatId);
+}
+
+function renderHistory(){
+ $("history").innerHTML="";
+ chats.forEach(chat=>{
+  const row=document.createElement("div");
+  row.className="history-item"+(chat.id===currentChatId?" active":"");
+
+  const title=document.createElement("span");
+  title.textContent="▤ "+chat.title;
+
+  const del=document.createElement("button");
+  del.className="delete-chat";
+  del.textContent="×";
+  del.title="Delete chat";
+  del.onclick=(e)=>{
+   e.stopPropagation();
+   deleteChat(chat.id);
+  };
+
+  row.append(title,del);
+  row.onclick=()=>{
+   currentChatId=chat.id;
+   renderHistory();
+   renderMessages();
+   $("sidebar").classList.remove("open");
+  };
+  $("history").appendChild(row);
+ });
+}
+
+function deleteChat(id){
+ chats=chats.filter(c=>c.id!==id);
+ if(currentChatId===id){
+  currentChatId=chats[0]?.id||null;
+ }
+ saveChats();
+ if(!currentChatId)newChat();
+ else{
+  renderHistory();
+  renderMessages();
+ }
+}
+
+function clearAllChats(){
+ if(!confirm("Delete all chat history?"))return;
+ chats=[];
+ currentChatId=null;
+ localStorage.removeItem("nova_chats");
+ newChat();
+ toast("All chats cleared");
+}
+
+function escapeHTML(str){
+ return String(str).replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",
+  '"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function formatText(text){
+ let s=escapeHTML(text);
+
+ // Code blocks
+ s=s.replace(/```([\w+-]*)\n?([\s\S]*?)```/g,
+  (m,lang,code)=>'<pre><code>'+code.trim()+'</code></pre>');
+
+ // Inline code
+ s=s.replace(/`([^`\n]+)`/g,"<code>$1</code>");
+
+ // Bold and italic
+ s=s.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>");
+ s=s.replace(/\*(.*?)\*/g,"<em>$1</em>");
+
+ // Links (only http/https)
+ s=s.replace(/\[([^\]]+)\]\((https?:\/\/[^ )]+)\)/g,
+  '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+ // Headings
+ s=s.replace(/^### (.*)$/gm,"<h3>$1</h3>");
+ s=s.replace(/^## (.*)$/gm,"<h2>$1</h2>");
+ s=s.replace(/^# (.*)$/gm,"<h1>$1</h1>");
+
+ // Lists
+ s=s.replace(/^\s*[-*] (.*)$/gm,"<li>$1</li>");
+ s=s.replace(/(<li>.*<\/li>)/gs,"<ul>$1</ul>");
+
+ // Paragraphs and line breaks
+ s=s.split(/\n{2,}/).map(part=>{
+  if(/^<(h[1-3]|pre|ul)/.test(part))return part;
+  return "<p>"+part.replace(/\n/g,"<br>")+"</p>";
+ }).join("");
+
+ return s;
+}
+
+function renderMessages(){
+ const chat=currentChat();
+ const root=$("messages");
+ root.innerHTML="";
+
+ if(!chat || !chat.messages.length){
+  root.innerHTML=`
+   <div class="welcome" id="welcome">
+    <div class="welcome-logo">✦</div>
+    <h1>What can I help you with?</h1>
+    <p>Your intelligent AI assistant, powered by Groq.</p>
+    <div class="suggestions">
+     <button class="suggestion" onclick="useSuggestion('Explain AI in simple words')">💡 Explain AI</button>
+     <button class="suggestion" onclick="useSuggestion('Write an HTML website')">💻 Build a website</button>
+     <button class="suggestion" onclick="useSuggestion('Teach me JavaScript')">📚 Learn JavaScript</button>
+     <button class="suggestion" onclick="useSuggestion('Give me business ideas')">🚀 Creative ideas</button>
+    </div>
+   </div>`;
+  return;
+ }
+
+ chat.messages.forEach((msg,index)=>{
+  const row=document.createElement("div");
+  row.className="message "+(msg.role==="user"?"user":"assistant");
+
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent=msg.role==="user"?"👤":"✦";
+
+  const content=document.createElement("div");
+  content.className="content";
+
+  const name=document.createElement("div");
+  name.className="name";
+  name.textContent=msg.role==="user"?"You":"Nova AI";
+
+  const bubble=document.createElement("div");
+  bubble.className="bubble";
+  bubble.innerHTML=formatText(msg.content);
+
+  content.append(name,bubble);
+
+  if(msg.role==="assistant"){
+   const actions=document.createElement("div");
+   actions.className="actions";
+
+   const copy=document.createElement("button");
+   copy.className="action-btn";
+   copy.textContent="▢ Copy";
+   copy.onclick=()=>copyText(msg.content);
+
+   actions.appendChild(copy);
+   content.appendChild(actions);
+  }
+
+  row.append(avatar,content);
+  root.appendChild(row);
+ });
+
+ scrollBottom();
+}
+
+function scrollBottom(){
+ $("chatArea").scrollTop=$("chatArea").scrollHeight;
+}
+
+async function copyText(text){
+ try{
+  await navigator.clipboard.writeText(text);
+  toast("Copied to clipboard");
+ }catch(e){
+  toast("Clipboard permission unavailable");
+ }
+}
+
+function useSuggestion(text){
+ $("prompt").value=text;
+ sendMessage();
+}
+
+async function sendMessage(){
+ if(busy)return;
+
+ const input=$("prompt");
+ const question=input.value.trim();
+ if(!question)return;
+
+ const key=getKey();
+ if(!key){
+  toast("Please enter your Groq API Key first");
+  openSettings();
+  return;
+ }
+
+ let chat=currentChat();
+ if(!chat){
+  newChat();
+  chat=currentChat();
+ }
+
+ input.value="";
+ input.style.height="auto";
+
+ chat.messages.push({role:"user",content:question});
+ if(chat.messages.length===1){
+  chat.title=question.slice(0,35)+(question.length>35?"...":"");
+ }
+ saveChats();
+ renderHistory();
+ renderMessages();
+
+ busy=true;
+ $("sendBtn").disabled=true;
+
+ const typing=document.createElement("div");
+ typing.className="typing";
+ typing.id="typing";
+ typing.textContent="✦ Nova AI is thinking...";
+ $("messages").appendChild(typing);
+ scrollBottom();
+
+ try{
+  const selectedModel=$("modelSelect").value;
+
+  const messages=[
+   {role:"system",content:SYSTEM_PROMPT},
+   ...chat.messages.map(m=>({
+    role:m.role,
+    content:m.content
+   }))
+  ];
+
+  const response=await fetch(API_URL,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer "+key
+   },
+   body:JSON.stringify({
+    model:selectedModel,
+    messages:messages,
+    temperature:0.7,
+    max_completion_tokens:2048,
+    stream:false
+   })
+  });
+
+  const data=await response.json();
+
+  if(!response.ok){
+   throw new Error(data.error?.message||"API Error: "+response.status);
+  }
+
+  const answer=data.choices?.[0]?.message?.content;
+  if(!answer)throw new Error("Empty response from Groq");
+
+  chat.messages.push({
+   role:"assistant",
+   content:answer
+  });
+
+  saveChats();
+  renderMessages();
+  renderHistory();
+
+ }catch(error){
+  const typingEl=$("typing");
+  if(typingEl)typingEl.remove();
+
+  const message=error.message||"Unknown error";
+
+  const row=document.createElement("div");
+  row.className="message assistant";
+  row.innerHTML=`
+   <div class="avatar">⚠</div>
+   <div class="content">
+    <div class="name">Connection Error</div>
+    <div class="bubble"></div>
+   </div>`;
+  row.querySelector(".bubble").textContent=message;
+  $("messages").appendChild(row);
+  scrollBottom();
+
+ }finally{
+  busy=false;
+  $("sendBtn").disabled=false;
+  input.focus();
+ }
+}
+
+function openSettings(){
+ $("apiKey").value=getKey();
+ $("rememberKey").checked=!!localStorage.getItem("nova_api_key");
+ $("settingsModal").classList.add("show");
+}
+
+function closeSettings(){
+ $("settingsModal").classList.remove("show");
+}
+
+function saveKey(){
+ const key=$("apiKey").value.trim();
+
+ if(!key){
+  toast("Please enter an API key");
+  return;
+ }
+
+ if(!key.startsWith("gsk_")){
+  toast("This does not look like a Groq API key");
+  return;
+ }
+
+ if($("rememberKey").checked){
+  localStorage.setItem("nova_api_key",key);
+  sessionStorage.removeItem("nova_api_key");
+ }else{
+  sessionStorage.setItem("nova_api_key",key);
+  localStorage.removeItem("nova_api_key");
+ }
+
+ closeSettings();
+ toast("API Key saved successfully");
+}
+
+function removeKey(){
+ localStorage.removeItem("nova_api_key");
+ sessionStorage.removeItem("nova_api_key");
+ $("apiKey").value="";
+ closeSettings();
+ toast("API Key removed");
+}
+
+function toggleKeyVisibility(){
+ $("apiKey").type=$("showKey").checked?"text":"password";
+}
+
+function toggleTheme(){
+ document.body.classList.toggle("dark");
+ localStorage.setItem("nova_theme",
+  document.body.classList.contains("dark")?"dark":"light");
+}
+
+function toggleSidebar(){
+ $("sidebar").classList.toggle("open");
+}
+
+$("prompt").addEventListener("keydown",e=>{
+ if(e.key==="Enter"&&!e.shiftKey){
+  e.preventDefault();
+  sendMessage();
+ }
+});
+
+$("prompt").addEventListener("input",function(){
+ this.style.height="auto";
+ this.style.height=Math.min(this.scrollHeight,150)+"px";
+});
+
+function init(){
+ if(localStorage.getItem("nova_theme")==="dark"){
+  document.body.classList.add("dark");
+ }
+ loadChats();
+}
+
+init();
+</script>
+</body>
+</html>

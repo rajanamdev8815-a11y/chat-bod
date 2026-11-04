@@ -3,31 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nova Medical AI - Smart Healthcare Assistant</title>
+
+<title>Nova Medical AI | Healthcare Assistant</title>
 
 <style>
-:root {
-  --bg:#f0f7f5;
-  --panel:#ffffff;
-  --text:#18332e;
-  --muted:#71847e;
-  --border:#dcebe6;
-  --accent:#0d9b78;
-  --soft:#e2f5ef;
-  --user:#078b70;
-  --shadow:0 8px 30px rgba(15,80,65,.07);
+:root{
+ --bg:#f3f8f7;
+ --panel:#ffffff;
+ --text:#173b35;
+ --muted:#718780;
+ --border:#e0ece8;
+ --accent:#079b79;
+ --soft:#e3f5ef;
+ --shadow:0 5px 25px rgba(20,80,65,.07);
 }
 
-body.dark {
-  --bg:#101b19;
-  --panel:#192724;
-  --text:#edf8f4;
-  --muted:#a1b9b0;
-  --border:#30453e;
-  --accent:#27c69c;
-  --soft:#203b33;
-  --user:#087c64;
-  --shadow:0 8px 30px rgba(0,0,0,.2);
+body.dark{
+ --bg:#101d1a;
+ --panel:#192a25;
+ --text:#edf8f3;
+ --muted:#a0b8ae;
+ --border:#30463e;
+ --accent:#24c59b;
+ --soft:#244238;
+ --shadow:0 5px 25px rgba(0,0,0,.2);
 }
 
 *{box-sizing:border-box}
@@ -36,7 +35,7 @@ body{
  margin:0;
  background:var(--bg);
  color:var(--text);
- font-family:Inter,Arial,sans-serif;
+ font-family:Arial,sans-serif;
  height:100vh;
  overflow:hidden;
 }
@@ -44,102 +43,118 @@ body{
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 
-.app{display:flex;height:100vh;width:100%}
+.app{
+ display:flex;
+ width:100%;
+ height:100vh;
+}
+
+/* SIDEBAR */
 
 .sidebar{
- width:270px;
+ width:265px;
  background:var(--panel);
  border-right:1px solid var(--border);
  display:flex;
  flex-direction:column;
  padding:20px;
  flex-shrink:0;
- z-index:5;
+ z-index:10;
 }
 
 .brand{
  display:flex;
  align-items:center;
- gap:10px;
- margin-bottom:25px;
+ gap:12px;
+ margin-bottom:28px;
 }
 
 .logo{
- width:39px;
- height:39px;
- border-radius:13px;
+ width:45px;
+ height:45px;
+ background:linear-gradient(135deg,#08b58c,#08765f);
+ color:white;
  display:grid;
  place-items:center;
- color:white;
- font-size:22px;
- background:linear-gradient(135deg,#08a982,#08765f);
+ border-radius:14px;
+ font-size:25px;
 }
 
-.brand h2{font-size:19px;margin:0}
-.brand small{color:var(--muted);font-size:11px}
+.brand h2{
+ margin:0;
+ font-size:18px;
+}
+
+.brand small{
+ color:var(--muted);
+ font-size:11px;
+}
 
 .new-chat{
  background:var(--accent);
  color:white;
  border:0;
+ border-radius:10px;
  padding:13px;
- border-radius:11px;
- font-weight:600;
- margin-bottom:22px;
+ font-weight:bold;
+ margin-bottom:24px;
 }
 
 .section-title{
- color:var(--muted);
  font-size:11px;
- font-weight:700;
+ color:var(--muted);
+ font-weight:bold;
  letter-spacing:1px;
- margin:8px 0 12px;
+ margin-bottom:12px;
 }
 
-.history{overflow-y:auto;flex:1}
+.history{
+ flex:1;
+ overflow-y:auto;
+}
 
 .history-item{
  display:flex;
  align-items:center;
- gap:9px;
+ gap:8px;
  padding:11px;
  border-radius:9px;
  cursor:pointer;
- color:var(--muted);
  font-size:13px;
- margin-bottom:4px;
+ color:var(--muted);
 }
 
-.history-item:hover,.history-item.active{
+.history-item:hover,
+.history-item.active{
  background:var(--soft);
  color:var(--text);
 }
 
 .history-item span{
+ flex:1;
  overflow:hidden;
  text-overflow:ellipsis;
  white-space:nowrap;
- flex:1;
 }
 
 .delete-chat{
- border:0;
  background:none;
+ border:0;
  color:var(--muted);
 }
 
 .sidebar-bottom{
  border-top:1px solid var(--border);
- padding-top:15px;
+ padding-top:14px;
 }
 
 .side-btn{
  width:100%;
- padding:11px;
- background:none;
  border:0;
+ background:none;
  color:var(--muted);
  text-align:left;
+ padding:12px;
  border-radius:9px;
 }
 
@@ -147,6 +162,8 @@ button{cursor:pointer}
  background:var(--soft);
  color:var(--text);
 }
+
+/* MAIN */
 
 .main{
  flex:1;
@@ -156,14 +173,13 @@ button{cursor:pointer}
 }
 
 .topbar{
- height:70px;
+ height:68px;
  background:var(--panel);
  border-bottom:1px solid var(--border);
  display:flex;
- align-items:center;
  justify-content:space-between;
+ align-items:center;
  padding:0 25px;
- gap:12px;
 }
 
 .top-left{
@@ -172,18 +188,25 @@ button{cursor:pointer}
  gap:12px;
 }
 
-.topbar h3{margin:0;font-size:16px}
+.topbar h3{
+ font-size:15px;
+ margin:0;
+}
+
+.top-actions{
+ display:flex;
+ gap:8px;
+ align-items:center;
+}
 
 .model-select{
+ max-width:190px;
  background:var(--bg);
  color:var(--text);
  border:1px solid var(--border);
  padding:9px;
  border-radius:9px;
- max-width:210px;
 }
-
-.top-actions{display:flex;gap:8px}
 
 .icon-btn{
  width:38px;
@@ -194,64 +217,226 @@ button{cursor:pointer}
  color:var(--text);
 }
 
+/* DASHBOARD */
+
 .chat-area{
  flex:1;
  overflow-y:auto;
- padding:30px 16px;
- scroll-behavior:smooth;
+ padding:25px 18px;
 }
 
-.messages{max-width:850px;margin:auto}
-
-.welcome{
- text-align:center;
- padding:8vh 10px 30px;
+.messages{
+ max-width:1000px;
+ margin:auto;
 }
 
-.welcome-logo{
- width:75px;
- height:75px;
- margin:auto auto 18px;
- border-radius:24px;
- background:var(--soft);
- display:grid;
- place-items:center;
- font-size:38px;
- color:var(--accent);
+/* MEDICAL HOME */
+
+.medical-home{
+ width:100%;
 }
 
-.welcome h1{
- font-size:30px;
- margin:0 0 10px;
+.hero{
+ background:linear-gradient(120deg,#087c67,#0caf85);
+ border-radius:20px;
+ padding:32px;
+ color:white;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:20px;
+ position:relative;
+ overflow:hidden;
 }
 
-.welcome p{
- color:var(--muted);
+.hero-content{
+ max-width:650px;
+ position:relative;
+ z-index:1;
+}
+
+.hero-tag{
+ display:inline-block;
+ background:#ffffff25;
+ padding:7px 12px;
+ border-radius:30px;
+ font-size:11px;
+ margin-bottom:15px;
+}
+
+.hero h1{
+ font-size:32px;
+ line-height:1.3;
+ margin:0 0 12px;
+}
+
+.hero p{
  font-size:14px;
+ line-height:1.7;
+ color:#e0fff4;
+ margin:0 0 20px;
 }
 
-.suggestions{
+.hero-btn{
+ background:white;
+ color:#087c67;
+ border:0;
+ border-radius:9px;
+ padding:12px 20px;
+ font-weight:bold;
+}
+
+.hero-icon{
+ font-size:100px;
+ opacity:.9;
+ padding:10px;
+}
+
+.status{
+ display:flex;
+ align-items:center;
+ gap:7px;
+ font-size:12px;
+ color:#e1fff4;
+ margin-top:18px;
+}
+
+.status-dot{
+ width:8px;
+ height:8px;
+ background:#75ffc1;
+ border-radius:50%;
+}
+
+/* SECTION */
+
+.section-heading{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:28px 0 15px;
+}
+
+.section-heading h2{
+ font-size:19px;
+ margin:0;
+}
+
+.section-heading p{
+ color:var(--muted);
+ font-size:12px;
+ margin:5px 0 0;
+}
+
+/* MEDICAL CARDS */
+
+.medical-grid{
  display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:12px;
- max-width:570px;
- margin:28px auto;
+ grid-template-columns:repeat(3,1fr);
+ gap:14px;
 }
 
-.suggestion{
- text-align:left;
- padding:15px;
+.med-card{
  background:var(--panel);
  border:1px solid var(--border);
- border-radius:13px;
- color:var(--text);
- font-size:13px;
+ border-radius:15px;
+ padding:20px;
+ cursor:pointer;
+ transition:.2s;
+ min-height:145px;
 }
 
-.suggestion:hover{
+.med-card:hover{
+ transform:translateY(-3px);
  border-color:var(--accent);
- background:var(--soft);
+ box-shadow:var(--shadow);
 }
+
+.med-icon{
+ width:43px;
+ height:43px;
+ background:var(--soft);
+ border-radius:12px;
+ display:grid;
+ place-items:center;
+ font-size:23px;
+ margin-bottom:13px;
+}
+
+.med-card h3{
+ font-size:14px;
+ margin:0 0 7px;
+}
+
+.med-card p{
+ font-size:12px;
+ line-height:1.6;
+ color:var(--muted);
+ margin:0;
+}
+
+/* SEARCH */
+
+.search-section{
+ margin-top:28px;
+ background:var(--panel);
+ border:1px solid var(--border);
+ padding:20px;
+ border-radius:16px;
+}
+
+.search-section h3{
+ font-size:16px;
+ margin:0 0 7px;
+}
+
+.search-section p{
+ color:var(--muted);
+ font-size:12px;
+}
+
+.search-box{
+ display:flex;
+ gap:10px;
+ margin-top:15px;
+}
+
+.search-box input{
+ flex:1;
+ min-width:0;
+ padding:13px;
+ border:1px solid var(--border);
+ background:var(--bg);
+ color:var(--text);
+ border-radius:10px;
+ outline:none;
+}
+
+.search-box button{
+ background:var(--accent);
+ color:white;
+ border:0;
+ border-radius:10px;
+ padding:0 20px;
+}
+
+/* HEALTH NOTICE */
+
+.health-notice{
+ margin-top:20px;
+ background:var(--soft);
+ padding:15px;
+ border-radius:12px;
+ font-size:12px;
+ line-height:1.7;
+ color:var(--muted);
+}
+
+.health-notice strong{
+ color:var(--text);
+}
+
+/* CHAT */
 
 .message{
  display:flex;
@@ -261,14 +446,14 @@ button{cursor:pointer}
 }
 
 .avatar{
- width:34px;
- height:34px;
+ width:36px;
+ height:36px;
  flex-shrink:0;
- border-radius:11px;
+ border-radius:12px;
  display:grid;
  place-items:center;
  background:var(--soft);
- font-size:17px;
+ font-size:18px;
 }
 
 .message.user .avatar{
@@ -276,31 +461,37 @@ button{cursor:pointer}
  color:white;
 }
 
-.content{min-width:0;flex:1}
+.content{
+ flex:1;
+ min-width:0;
+}
 
 .name{
  font-size:12px;
- font-weight:700;
- margin:2px 0 8px;
+ font-weight:bold;
+ margin:3px 0 8px;
 }
 
 .bubble{
  font-size:14px;
- line-height:1.75;
+ line-height:1.8;
  overflow-wrap:anywhere;
 }
 
 .message.user .bubble{
  display:inline-block;
- background:var(--user);
+ background:var(--accent);
  color:white;
  padding:11px 15px;
  border-radius:14px;
 }
 
+.bubble p{margin:0 0 10px}
+.bubble ul,.bubble ol{padding-left:22px}
+
 .bubble pre{
  background:#17221f;
- color:#eee;
+ color:white;
  padding:14px;
  border-radius:10px;
  overflow:auto;
@@ -308,66 +499,55 @@ button{cursor:pointer}
 
 .bubble code{
  background:var(--soft);
- padding:2px 5px;
+ padding:3px 5px;
  border-radius:4px;
 }
 
-.bubble pre code{background:none;padding:0}
-.bubble p{margin:0 0 10px}
-.bubble ul,.bubble ol{padding-left:22px}
-
-.bubble h2,.bubble h3{
- color:var(--accent);
-}
-
 .actions{
- display:flex;
- gap:8px;
  margin-top:8px;
 }
 
 .action-btn{
- border:0;
  background:none;
+ border:0;
  color:var(--muted);
  font-size:12px;
- padding:5px;
 }
-
-.action-btn:hover{color:var(--accent)}
 
 .typing{
+ padding:12px;
  color:var(--muted);
  font-size:13px;
- padding:12px;
 }
 
+/* COMPOSER */
+
 .composer-wrap{
+ padding:10px 18px 15px;
  background:var(--bg);
- padding:12px 18px 18px;
 }
 
 .composer{
- max-width:850px;
+ max-width:950px;
  margin:auto;
  background:var(--panel);
  border:1px solid var(--border);
- border-radius:17px;
+ border-radius:16px;
  box-shadow:var(--shadow);
  padding:12px;
 }
 
 #prompt{
  width:100%;
+ min-height:45px;
+ max-height:130px;
+ resize:none;
  border:0;
  outline:0;
- resize:none;
- min-height:50px;
- max-height:150px;
- color:var(--text);
  background:transparent;
- font-size:14px;
+ color:var(--text);
  padding:8px;
+ font-size:14px;
 }
 
 .composer-bottom{
@@ -382,37 +562,27 @@ button{cursor:pointer}
 }
 
 .send-btn{
- border:0;
- background:var(--accent);
- color:white;
  width:42px;
  height:40px;
- border-radius:11px;
- font-size:18px;
+ background:var(--accent);
+ color:white;
+ border:0;
+ border-radius:10px;
+ font-size:19px;
 }
 
 .send-btn:disabled{
  opacity:.5;
- cursor:not-allowed;
 }
 
 .footer-note{
  text-align:center;
- color:var(--muted);
  font-size:10px;
- margin-top:10px;
+ color:var(--muted);
+ margin-top:8px;
 }
 
-.medical-notice{
- max-width:850px;
- margin:0 auto 10px;
- padding:10px 13px;
- border-radius:10px;
- background:var(--soft);
- color:var(--muted);
- font-size:11px;
- line-height:1.5;
-}
+/* SETTINGS */
 
 .modal-backdrop{
  position:fixed;
@@ -421,7 +591,7 @@ button{cursor:pointer}
  display:none;
  align-items:center;
  justify-content:center;
- z-index:20;
+ z-index:30;
  padding:15px;
 }
 
@@ -432,12 +602,11 @@ button{cursor:pointer}
  max-width:430px;
  background:var(--panel);
  border:1px solid var(--border);
- border-radius:18px;
+ border-radius:17px;
  padding:22px;
- box-shadow:var(--shadow);
 }
 
-.modal h2{margin:0 0 7px;font-size:19px}
+.modal h2{margin:0 0 8px}
 
 .modal p{
  color:var(--muted);
@@ -445,37 +614,38 @@ button{cursor:pointer}
  line-height:1.6;
 }
 
-.field{margin-top:18px}
+.field{margin-top:17px}
 
 .field label{
  display:block;
  font-size:12px;
- font-weight:600;
  margin-bottom:8px;
+ font-weight:bold;
 }
 
 .field input:not([type=checkbox]){
  width:100%;
  padding:12px;
- border-radius:9px;
  border:1px solid var(--border);
+ border-radius:9px;
  background:var(--bg);
  color:var(--text);
- outline:0;
 }
 
 .modal-buttons{
  display:flex;
  justify-content:flex-end;
- gap:9px;
+ gap:8px;
  margin-top:22px;
  flex-wrap:wrap;
 }
 
 .modal-buttons button{
- padding:10px 15px;
- border-radius:9px;
+ padding:10px 13px;
  border:1px solid var(--border);
+ border-radius:8px;
+ background:var(--panel);
+ color:var(--text);
 }
 
 .primary{
@@ -489,18 +659,20 @@ button{cursor:pointer}
  bottom:25px;
  left:50%;
  transform:translateX(-50%);
- background:#242434;
+ background:#222;
  color:white;
- padding:11px 18px;
+ padding:12px 18px;
  border-radius:10px;
- font-size:13px;
  display:none;
  z-index:50;
+ font-size:13px;
 }
 
 .menu-btn{display:none}
 
-@media(max-width:700px){
+/* MOBILE */
+
+@media(max-width:750px){
 
  .sidebar{
   position:fixed;
@@ -516,27 +688,73 @@ button{cursor:pointer}
  .menu-btn{display:block}
 
  .topbar{
-  padding:0 12px;
-  height:62px;
+  height:60px;
+  padding:0 10px;
  }
 
- .topbar h3{font-size:14px}
+ .topbar h3{font-size:13px}
 
  .model-select{
-  max-width:145px;
-  font-size:11px;
+  max-width:115px;
+  font-size:10px;
+  padding:8px 3px;
  }
 
- .chat-area{padding:15px 12px}
+ .top-actions{gap:5px}
 
- .welcome{padding-top:7vh}
+ .icon-btn{
+  width:34px;
+  height:34px;
+ }
 
- .welcome h1{font-size:24px}
+ .chat-area{
+  padding:15px 11px;
+ }
 
- .suggestions{grid-template-columns:1fr}
+ .hero{
+  padding:23px 18px;
+ }
+
+ .hero h1{
+  font-size:23px;
+ }
+
+ .hero-icon{
+  font-size:55px;
+ }
+
+ .hero p{font-size:12px}
+
+ .medical-grid{
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+ }
+
+ .med-card{
+  padding:13px;
+  min-height:145px;
+ }
+
+ .med-card h3{font-size:12px}
+ .med-card p{font-size:11px}
+
+ .section-heading h2{font-size:17px}
+
+ .search-section{padding:14px}
+
+ .search-box{gap:6px}
+
+ .search-box button{padding:0 12px}
 
  .composer-wrap{padding:8px}
+
 }
+
+@media(max-width:370px){
+ .hero-icon{display:none}
+ .medical-grid{grid-template-columns:1fr 1fr}
+}
+
 </style>
 </head>
 
@@ -544,43 +762,60 @@ button{cursor:pointer}
 
 <div class="app">
 
+<!-- SIDEBAR -->
+
 <aside class="sidebar" id="sidebar">
 
  <div class="brand">
+
   <div class="logo">✚</div>
+
   <div>
    <h2>Nova Medical AI</h2>
-   <small>AI Healthcare Assistant</small>
+   <small>Healthcare Intelligence</small>
   </div>
+
  </div>
 
- <button class="new-chat" onclick="newChat()">＋ New Chat</button>
+ <button class="new-chat" onclick="newChat()">
+ ＋ New Medical Chat
+ </button>
 
- <div class="section-title">YOUR CHATS</div>
+ <div class="section-title">CHAT HISTORY</div>
+
  <div class="history" id="history"></div>
 
  <div class="sidebar-bottom">
+
   <button class="side-btn" onclick="openSettings()">⚙ API Settings</button>
+
   <button class="side-btn" onclick="toggleTheme()">◐ Appearance</button>
+
   <button class="side-btn" onclick="clearAllChats()">⌫ Clear All Chats</button>
+
  </div>
 
 </aside>
+
+<!-- MAIN -->
 
 <main class="main">
 
  <header class="topbar">
 
   <div class="top-left">
+
    <button class="icon-btn menu-btn" onclick="toggleSidebar()">☰</button>
-   <h3>🏥 Medical Assistant</h3>
+
+   <h3>🏥 Medical AI Assistant</h3>
+
   </div>
 
   <div class="top-actions">
 
-   <select class="model-select" id="modelSelect" title="Select AI Model">
+   <select class="model-select" id="modelSelect">
 
-    <optgroup label="GPT Style Models">
+    <optgroup label="GPT Models">
      <option value="openai/gpt-oss-20b">GPT OSS 20B</option>
      <option value="openai/gpt-oss-120b">GPT OSS 120B</option>
     </optgroup>
@@ -592,50 +827,191 @@ button{cursor:pointer}
 
    </select>
 
-   <button class="icon-btn" onclick="openSettings()" title="Settings">⚙</button>
-   <button class="icon-btn" onclick="toggleTheme()" title="Theme">☼</button>
+   <button class="icon-btn" onclick="openSettings()">⚙</button>
+
+   <button class="icon-btn" onclick="toggleTheme()">☼</button>
 
   </div>
 
  </header>
 
+ <!-- CHAT AREA -->
+
  <section class="chat-area" id="chatArea">
 
   <div class="messages" id="messages">
 
-   <div class="welcome" id="welcome">
+   <!-- MEDICAL DASHBOARD -->
 
-    <div class="welcome-logo">✚</div>
+   <div class="medical-home">
 
-    <h1>Welcome to Nova Medical AI</h1>
+    <div class="hero">
 
-    <p>Your intelligent AI healthcare and medical information assistant.</p>
+     <div class="hero-content">
 
-    <div class="suggestions">
+      <span class="hero-tag">✚ AI POWERED HEALTHCARE</span>
 
-     <button class="suggestion" onclick="useSuggestion('What is diabetes? Explain its symptoms, causes and prevention in Hindi.')">
-      🩺 Diabetes Information
-     </button>
+      <h1>Your Health.<br>Your Knowledge.<br>Your Medical AI.</h1>
 
-     <button class="suggestion" onclick="useSuggestion('Explain common medicines, their uses and side effects.')">
-      💊 Medicine Information
-     </button>
+      <p>
+       Welcome to Nova Medical AI.
+       Get educational information about diseases,
+       medicines, symptoms, nutrition and human health.
+      </p>
 
-     <button class="suggestion" onclick="useSuggestion('Explain human body systems in simple Hindi.')">
-      🫀 Human Body Knowledge
-     </button>
+      <button class="hero-btn" onclick="focusSearch()">
+       Start Medical Consultation →
+      </button>
 
-     <button class="suggestion" onclick="useSuggestion('Give me healthy diet and nutrition advice.')">
-      🥗 Health & Nutrition
-     </button>
+      <div class="status">
+       <span class="status-dot"></span>
+       Medical AI Assistant Ready
+      </div>
 
-     <button class="suggestion" onclick="useSuggestion('What are the common causes of fever and what precautions should be taken?')">
-      🌡️ Symptoms & Fever
-     </button>
+     </div>
 
-     <button class="suggestion" onclick="useSuggestion('Explain basic first aid and emergency precautions.')">
-      🚑 First Aid Information
-     </button>
+     <div class="hero-icon">🏥</div>
+
+    </div>
+
+    <!-- MEDICAL SERVICES -->
+
+    <div class="section-heading">
+
+     <div>
+      <h2>Explore Medical Services</h2>
+      <p>Select a medical category to get information.</p>
+     </div>
+
+    </div>
+
+    <div class="medical-grid">
+
+     <div class="med-card" onclick="useSuggestion('Explain diseases, their causes, symptoms, diagnosis and prevention.')">
+
+      <div class="med-icon">🦠</div>
+
+      <h3>Diseases Information</h3>
+
+      <p>Learn about diseases, symptoms, causes and prevention.</p>
+
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain medicines, their general uses, side effects and precautions.')">
+
+      <div class="med-icon">💊</div>
+
+      <h3>Medicine Guide</h3>
+
+      <p>Learn about medicines, uses and possible side effects.</p>
+
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain human anatomy and the functions of different organs.')">
+
+      <div class="med-icon">🫀</div>
+
+      <h3>Human Body</h3>
+
+      <p>Understand organs, body systems and human biology.</p>
+
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain healthy nutrition, vitamins, minerals and balanced diet.')">
+
+      <div class="med-icon">🥗</div>
+
+      <h3>Nutrition & Diet</h3>
+
+      <p>Understand healthy food, vitamins and nutrition.</p>
+
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain common symptoms and their possible causes.')">
+
+      <div class="med-icon">🌡️</div>
+
+      <h3>Symptoms Checker</h3>
+
+      <p>Understand possible reasons behind common symptoms.</p>
+
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain basic first aid and emergency precautions.')">
+
+      <div class="med-icon">🚑</div>
+
+      <h3>First Aid</h3>
+
+      <p>Learn basic first aid and emergency precautions.</p>
+
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain common blood tests and laboratory reports.')">
+
+      <div class="med-icon">🧪</div>
+
+      <h3>Lab Reports</h3>
+
+      <p>Understand common blood tests and medical reports.</p>
+
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain heart health, blood pressure and cardiovascular health.')">
+
+      <div class="med-icon">❤️</div>
+
+      <h3>Heart Health</h3>
+
+      <p>Learn about heart health and cardiovascular science.</p>
+
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain sleep, exercise, stress management and healthy lifestyle.')">
+
+      <div class="med-icon">🧘</div>
+
+      <h3>Healthy Lifestyle</h3>
+
+      <p>Learn about exercise, sleep and healthy habits.</p>
+
+     </div>
+
+    </div>
+
+    <!-- MEDICAL SEARCH -->
+
+    <div class="search-section" id="medicalSearch">
+
+     <h3>🔍 Ask Your Medical Question</h3>
+
+     <p>
+      Search for a disease, medicine, symptom or health topic.
+     </p>
+
+     <div class="search-box">
+
+      <input
+       id="medicalInput"
+       type="text"
+       placeholder="Example: What is diabetes?">
+
+      <button onclick="searchMedical()">Search →</button>
+
+     </div>
+
+    </div>
+
+    <!-- DISCLAIMER -->
+
+    <div class="health-notice">
+
+     <strong>⚕ Medical Information Notice</strong><br>
+
+     Nova Medical AI provides general educational medical information.
+     It does not replace professional medical diagnosis or treatment.
+     For emergencies, contact emergency services immediately.
+     In India, call 112.
 
     </div>
 
@@ -645,20 +1021,16 @@ button{cursor:pointer}
 
  </section>
 
- <div class="composer-wrap">
+ <!-- COMPOSER -->
 
-  <div class="medical-notice">
-   🏥 Nova Medical AI provides educational health information.
-   It is not a substitute for a qualified doctor or emergency medical care.
-  </div>
+ <div class="composer-wrap">
 
   <div class="composer">
 
    <textarea
     id="prompt"
-    placeholder="Ask anything about diseases, medicines, symptoms or health..."
-    rows="2">
-   </textarea>
+    placeholder="Ask Nova Medical AI about diseases, medicines, symptoms..."
+    rows="2"></textarea>
 
    <div class="composer-bottom">
 
@@ -671,7 +1043,7 @@ button{cursor:pointer}
   </div>
 
   <div class="footer-note">
-   Medical information may be incomplete. Always verify important medical decisions with a healthcare professional.
+   Nova Medical AI can make mistakes. Always verify medical advice with a qualified healthcare professional.
   </div>
 
  </div>
@@ -680,7 +1052,7 @@ button{cursor:pointer}
 
 </div>
 
-<!-- API SETTINGS -->
+<!-- SETTINGS -->
 
 <div class="modal-backdrop" id="settingsModal">
 
@@ -688,17 +1060,13 @@ button{cursor:pointer}
 
   <h2>⚙ API Settings</h2>
 
-  <p>Enter your Groq API key to connect Nova Medical AI.</p>
+  <p>Connect your Groq API key.</p>
 
   <div class="field">
 
-   <label for="apiKey">Groq API Key</label>
+   <label>Groq API Key</label>
 
-   <input
-    id="apiKey"
-    type="password"
-    placeholder="gsk_..."
-    autocomplete="off">
+   <input id="apiKey" type="password" placeholder="gsk_...">
 
   </div>
 
@@ -720,7 +1088,7 @@ button{cursor:pointer}
 
   </div>
 
-  <p>Do not share your API key. Browser-based websites cannot keep a key secret from their users.</p>
+  <p>Browser-based websites cannot keep API keys secret from their users.</p>
 
   <div class="modal-buttons">
 
@@ -740,152 +1108,107 @@ button{cursor:pointer}
 
 <script>
 
-const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const API_URL="https://api.groq.com/openai/v1/chat/completions";
 
-const SYSTEM_PROMPT = `
-You are Nova Medical AI, an intelligent multilingual medical and healthcare information assistant.
+const SYSTEM_PROMPT=`
 
-YOUR MAIN PURPOSE:
+You are Nova Medical AI, a knowledgeable multilingual medical education assistant.
 
-Provide helpful, accurate, understandable and responsible medical information.
-
-MEDICAL KNOWLEDGE AREAS:
+YOUR MAIN AREAS:
 
 1. Human anatomy and physiology.
 2. Diseases and medical conditions.
-3. Symptoms and their possible causes.
+3. Symptoms and possible causes.
 4. Medicines and their general uses.
 5. Medicine side effects and precautions.
-6. Drug interactions and medicine safety.
-7. Nutrition, vitamins and minerals.
-8. Healthy lifestyle and fitness.
-9. First aid and emergency awareness.
-10. Medical science and biology.
-11. Blood tests and laboratory reports.
-12. Common infections and their prevention.
-13. Heart, brain, lungs, liver and kidney health.
-14. Child and elderly health information.
-15. Mental health education.
-16. Women's and men's general health education.
-17. Medical terminology and explanations.
+6. Drug interactions.
+7. Nutrition and vitamins.
+8. Medical science.
+9. First aid.
+10. Blood tests and laboratory reports.
+11. Heart, brain, liver, lungs and kidney health.
+12. Common infections.
+13. Healthy lifestyle.
+14. General health education.
 
-LANGUAGE RULES:
+LANGUAGE:
 
-- Always reply in the language used by the user.
-- Support Hindi and English.
-- If the user writes in Hindi, answer in simple Hindi.
-- If the user writes in English, answer in English.
-- Do not randomly change languages.
-- Explain complicated medical words in simple language.
+Always reply in the language used by the user.
+Support Hindi and English.
+Use simple Hindi for Hindi questions.
+Never randomly change language.
 
-DISEASE INFORMATION:
+DISEASE QUESTIONS:
 
-When a user asks about a disease, explain:
+Explain:
+- What the disease is.
+- Causes.
+- Symptoms.
+- Diagnosis.
+- Treatment options.
+- Prevention.
+- When to consult a doctor.
 
-1. What the disease is.
-2. Its common causes.
-3. Common symptoms.
-4. How it is diagnosed.
-5. Available treatment approaches.
-6. Prevention and precautions.
-7. When to consult a doctor.
+MEDICINE QUESTIONS:
 
-MEDICINE INFORMATION:
-
-When a user asks about a medicine, explain:
-
-1. Generic name and medicine category, if known.
-2. What it is generally used for.
-3. How it works.
-4. Common side effects.
-5. Important precautions.
-6. Possible interactions.
-7. Who should be particularly careful.
+Explain:
+- Generic name, if known.
+- General uses.
+- How it works.
+- Common side effects.
+- Precautions.
+- Possible interactions.
 
 Never invent medicine information.
+Never prescribe personalized medicine doses.
+Do not recommend starting, stopping or changing prescribed medicines without medical supervision.
 
-Never recommend prescription medicines or personalized dosages without an appropriate medical professional's guidance.
+SYMPTOMS:
 
-Never tell users to start, stop or change prescribed medicines on their own.
+Explain possible causes.
+Make clear that symptoms alone cannot confirm a diagnosis.
+Recommend appropriate medical evaluation.
 
-If the medicine name is unclear, ask for its exact name, strength or packaging details.
+SAFETY:
 
-SYMPTOM INFORMATION:
+You are not a licensed doctor.
+Never claim to provide a confirmed diagnosis.
+Never guarantee a cure.
+Be careful with children, pregnancy and elderly patients.
 
-When users describe symptoms:
+EMERGENCIES:
 
-- Explain possible causes.
-- Ask relevant follow-up questions when necessary.
-- Clearly state that symptoms alone cannot establish a diagnosis.
-- Explain warning signs that need medical attention.
-- Recommend appropriate professional evaluation.
+For severe breathing difficulty, suspected heart attack, stroke, unconsciousness, severe bleeding or poisoning, advise immediate emergency care.
 
-MEDICAL SAFETY:
+In India, emergency number 112 can be used.
 
-- You are an AI assistant, not a licensed doctor.
-- Never claim to provide a confirmed diagnosis.
-- Never guarantee a cure.
-- Never make up medical facts, research or references.
-- Be especially careful with children, pregnancy, elderly people and serious medical conditions.
-- Do not recommend dangerous home remedies.
-- Do not encourage self-medication.
-- For potentially serious symptoms, recommend prompt medical evaluation.
+Do not delay emergency treatment.
 
-EMERGENCY RULE:
+GENERAL QUESTIONS:
 
-If a user describes possible heart attack, stroke, severe breathing difficulty, unconsciousness, severe bleeding, poisoning or another life-threatening emergency:
+You can also answer education, science, mathematics, coding and general knowledge questions.
 
-Immediately advise contacting emergency services or going to the nearest emergency department.
+Give clear, informative and organized answers.
+Always be friendly, accurate and responsible.
 
-For users in India, emergency number 112 may be used.
-
-Do not delay emergency care by asking unnecessary questions.
-
-RESPONSE FORMAT:
-
-Use clear headings and bullet points.
-
-Keep answers understandable and informative.
-
-For medical questions, include:
-
-- Explanation
-- Causes
-- Symptoms
-- Treatment information
-- Precautions
-- When to see a doctor
-
-Only include sections relevant to the question.
-
-OTHER QUESTIONS:
-
-You are also capable of answering general knowledge, mathematics, education, science, technology and coding questions.
-
-When writing code, provide complete working code when requested.
-
-Always be friendly, respectful, accurate and helpful.
-
-Your goal is to provide responsible medical education and general assistance.
 `;
 
-let chats = [];
-let currentChatId = null;
-let busy = false;
+let chats=[];
+let currentChatId=null;
+let busy=false;
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
 
 function getKey(){
 
- return sessionStorage.getItem("nova_api_key") ||
-        localStorage.getItem("nova_api_key") || "";
+ return sessionStorage.getItem("nova_api_key")||
+ localStorage.getItem("nova_api_key")||"";
 
 }
 
 function toast(message){
 
  const el=$("toast");
-
  el.textContent=message;
  el.style.display="block";
 
@@ -900,13 +1223,9 @@ function toast(message){
 function saveChats(){
 
  try{
-
   localStorage.setItem("nova_chats",JSON.stringify(chats));
-
  }catch(e){
-
-  toast("Chat storage is full. Delete some old chats.");
-
+  toast("Chat storage full");
  }
 
 }
@@ -914,21 +1233,15 @@ function saveChats(){
 function loadChats(){
 
  try{
-
   chats=JSON.parse(localStorage.getItem("nova_chats")||"[]");
-
   if(!Array.isArray(chats))chats=[];
-
  }catch(e){
-
   chats=[];
-
  }
 
  if(chats.length){
 
   currentChatId=chats[0].id;
-
   renderHistory();
   renderMessages();
 
@@ -945,21 +1258,17 @@ function newChat(){
  currentChatId=Date.now().toString();
 
  chats.unshift({
-
   id:currentChatId,
   title:"New Chat",
   messages:[],
   time:Date.now()
-
  });
 
  saveChats();
-
  renderHistory();
  renderMessages();
 
  $("sidebar").classList.remove("open");
-
  $("prompt").focus();
 
 }
@@ -989,27 +1298,19 @@ function renderHistory(){
 
   del.className="delete-chat";
   del.textContent="×";
-  del.title="Delete chat";
 
-  del.onclick=(e)=>{
-
+  del.onclick=e=>{
    e.stopPropagation();
-
    deleteChat(chat.id);
-
   };
 
   row.append(title,del);
 
   row.onclick=()=>{
-
    currentChatId=chat.id;
-
    renderHistory();
    renderMessages();
-
    $("sidebar").classList.remove("open");
-
   };
 
   $("history").appendChild(row);
@@ -1023,22 +1324,15 @@ function deleteChat(id){
  chats=chats.filter(c=>c.id!==id);
 
  if(currentChatId===id){
-
   currentChatId=chats[0]?.id||null;
-
  }
 
  saveChats();
 
- if(!currentChatId){
-
-  newChat();
-
- }else{
-
+ if(!currentChatId)newChat();
+ else{
   renderHistory();
   renderMessages();
-
  }
 
 }
@@ -1053,7 +1347,6 @@ function clearAllChats(){
  localStorage.removeItem("nova_chats");
 
  newChat();
-
  toast("All chats cleared");
 
 }
@@ -1061,13 +1354,11 @@ function clearAllChats(){
 function escapeHTML(str){
 
  return String(str).replace(/[&<>"']/g,c=>({
-
   "&":"&amp;",
   "<":"&lt;",
   ">":"&gt;",
   '"':"&quot;",
   "'":"&#39;"
-
  }[c]));
 
 }
@@ -1113,41 +1404,123 @@ function formatText(text){
 function renderMessages(){
 
  const chat=currentChat();
-
  const root=$("messages");
 
  root.innerHTML="";
 
- if(!chat || !chat.messages.length){
+ if(!chat||!chat.messages.length){
 
   root.innerHTML=`
 
-   <div class="welcome" id="welcome">
+   <div class="medical-home">
 
-    <div class="welcome-logo">✚</div>
+    <div class="hero">
 
-    <h1>Welcome to Nova Medical AI</h1>
+     <div class="hero-content">
 
-    <p>Your intelligent AI healthcare and medical information assistant.</p>
+      <span class="hero-tag">✚ AI POWERED HEALTHCARE</span>
 
-    <div class="suggestions">
+      <h1>Your Health.<br>Your Knowledge.<br>Your Medical AI.</h1>
 
-     <button class="suggestion" onclick="useSuggestion('What is diabetes? Explain its symptoms and causes.')">
-      🩺 Diabetes Information
-     </button>
+      <p>Welcome to Nova Medical AI. Ask questions about diseases, medicines and health.</p>
 
-     <button class="suggestion" onclick="useSuggestion('Tell me about common medicines and their side effects.')">
-      💊 Medicine Information
-     </button>
+      <button class="hero-btn" onclick="focusSearch()">Start Medical Consultation →</button>
 
-     <button class="suggestion" onclick="useSuggestion('Explain the human body.')">
-      🫀 Human Body Knowledge
-     </button>
+      <div class="status">
+       <span class="status-dot"></span>
+       Medical AI Assistant Ready
+      </div>
 
-     <button class="suggestion" onclick="useSuggestion('Explain healthy nutrition.')">
-      🥗 Health & Nutrition
-     </button>
+     </div>
 
+     <div class="hero-icon">🏥</div>
+
+    </div>
+
+    <div class="section-heading">
+     <div>
+      <h2>Explore Medical Services</h2>
+      <p>Select a category to get information.</p>
+     </div>
+    </div>
+
+    <div class="medical-grid">
+
+     <div class="med-card" onclick="useSuggestion('Explain diseases, their causes and symptoms.')">
+      <div class="med-icon">🦠</div>
+      <h3>Diseases Information</h3>
+      <p>Learn about diseases and prevention.</p>
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain medicines and side effects.')">
+      <div class="med-icon">💊</div>
+      <h3>Medicine Guide</h3>
+      <p>Medicine uses and precautions.</p>
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain human anatomy.')">
+      <div class="med-icon">🫀</div>
+      <h3>Human Body</h3>
+      <p>Learn about organs and body systems.</p>
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain nutrition and healthy diet.')">
+      <div class="med-icon">🥗</div>
+      <h3>Nutrition & Diet</h3>
+      <p>Food, vitamins and nutrition.</p>
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain common symptoms and possible causes.')">
+      <div class="med-icon">🌡️</div>
+      <h3>Symptoms Checker</h3>
+      <p>Understand common symptoms.</p>
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain first aid.')">
+      <div class="med-icon">🚑</div>
+      <h3>First Aid</h3>
+      <p>Basic emergency information.</p>
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain common laboratory reports and blood tests.')">
+      <div class="med-icon">🧪</div>
+      <h3>Lab Reports</h3>
+      <p>Understand medical test reports.</p>
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain heart health.')">
+      <div class="med-icon">❤️</div>
+      <h3>Heart Health</h3>
+      <p>Learn about cardiovascular health.</p>
+     </div>
+
+     <div class="med-card" onclick="useSuggestion('Explain healthy lifestyle and exercise.')">
+      <div class="med-icon">🧘</div>
+      <h3>Healthy Lifestyle</h3>
+      <p>Exercise, sleep and wellness.</p>
+     </div>
+
+    </div>
+
+    <div class="search-section" id="medicalSearch">
+
+     <h3>🔍 Ask Your Medical Question</h3>
+
+     <p>Search for any disease, medicine or symptom.</p>
+
+     <div class="search-box">
+
+      <input id="medicalInput" placeholder="Example: What is diabetes?">
+
+      <button onclick="searchMedical()">Search →</button>
+
+     </div>
+
+    </div>
+
+    <div class="health-notice">
+     <strong>⚕ Medical Information Notice</strong><br>
+     This AI provides general educational information, not a confirmed diagnosis or substitute for professional medical care. In emergencies in India, call 112.
     </div>
 
    </div>`;
@@ -1156,7 +1529,7 @@ function renderMessages(){
 
  }
 
- chat.messages.forEach((msg,index)=>{
+ chat.messages.forEach(msg=>{
 
   const row=document.createElement("div");
 
@@ -1166,23 +1539,18 @@ function renderMessages(){
   const avatar=document.createElement("div");
 
   avatar.className="avatar";
-
   avatar.textContent=msg.role==="user"?"👤":"✚";
 
   const content=document.createElement("div");
-
   content.className="content";
 
   const name=document.createElement("div");
-
   name.className="name";
 
   name.textContent=msg.role==="user"?"You":"Nova Medical AI";
 
   const bubble=document.createElement("div");
-
   bubble.className="bubble";
-
   bubble.innerHTML=formatText(msg.content);
 
   content.append(name,bubble);
@@ -1190,19 +1558,15 @@ function renderMessages(){
   if(msg.role==="assistant"){
 
    const actions=document.createElement("div");
-
    actions.className="actions";
 
    const copy=document.createElement("button");
-
    copy.className="action-btn";
-
    copy.textContent="▢ Copy";
 
    copy.onclick=()=>copyText(msg.content);
 
    actions.appendChild(copy);
-
    content.appendChild(actions);
 
   }
@@ -1217,9 +1581,26 @@ function renderMessages(){
 
 }
 
-function scrollBottom(){
+function focusSearch(){
 
- $("chatArea").scrollTop=$("chatArea").scrollHeight;
+ $("medicalInput")?.focus();
+
+ $("medicalSearch")?.scrollIntoView({
+  behavior:"smooth",
+  block:"center"
+ });
+
+}
+
+function searchMedical(){
+
+ const value=$("medicalInput")?.value.trim();
+
+ if(!value)return;
+
+ $("prompt").value=value;
+
+ sendMessage();
 
 }
 
@@ -1228,12 +1609,11 @@ async function copyText(text){
  try{
 
   await navigator.clipboard.writeText(text);
-
-  toast("Copied to clipboard");
+  toast("Copied successfully");
 
  }catch(e){
 
-  toast("Clipboard permission unavailable");
+  toast("Clipboard unavailable");
 
  }
 
@@ -1242,8 +1622,13 @@ async function copyText(text){
 function useSuggestion(text){
 
  $("prompt").value=text;
-
  sendMessage();
+
+}
+
+function scrollBottom(){
+
+ $("chatArea").scrollTop=$("chatArea").scrollHeight;
 
 }
 
@@ -1261,7 +1646,7 @@ async function sendMessage(){
 
  if(!key){
 
-  toast("Please enter your Groq API Key first");
+  toast("Please enter your Groq API Key");
 
   openSettings();
 
@@ -1274,26 +1659,22 @@ async function sendMessage(){
  if(!chat){
 
   newChat();
-
   chat=currentChat();
 
  }
 
  input.value="";
-
  input.style.height="auto";
 
  chat.messages.push({
-
   role:"user",
   content:question
-
  });
 
  if(chat.messages.length===1){
 
   chat.title=question.slice(0,35)+
-   (question.length>35?"...":"");
+  (question.length>35?"...":"");
 
  }
 
@@ -1310,15 +1691,14 @@ async function sendMessage(){
 
  typing.className="typing";
  typing.id="typing";
- typing.textContent="✚ Nova Medical AI is analyzing your question...";
+
+ typing.textContent="✚ Nova Medical AI is thinking...";
 
  $("messages").appendChild(typing);
 
  scrollBottom();
 
  try{
-
-  const selectedModel=$("modelSelect").value;
 
   const messages=[
 
@@ -1328,10 +1708,8 @@ async function sendMessage(){
    },
 
    ...chat.messages.map(m=>({
-
     role:m.role,
     content:m.content
-
    }))
 
   ];
@@ -1341,16 +1719,13 @@ async function sendMessage(){
    method:"POST",
 
    headers:{
-
     "Content-Type":"application/json",
-
     "Authorization":"Bearer "+key
-
    },
 
    body:JSON.stringify({
 
-    model:selectedModel,
+    model:$("modelSelect").value,
 
     messages:messages,
 
@@ -1383,10 +1758,8 @@ async function sendMessage(){
   }
 
   chat.messages.push({
-
    role:"assistant",
    content:answer
-
   });
 
   saveChats();
@@ -1396,29 +1769,20 @@ async function sendMessage(){
 
  }catch(error){
 
-  const typingEl=$("typing");
-
-  if(typingEl)typingEl.remove();
-
-  const message=error.message||"Unknown error";
+  $("typing")?.remove();
 
   const row=document.createElement("div");
 
   row.className="message assistant";
 
   row.innerHTML=`
-
    <div class="avatar">⚠</div>
-
    <div class="content">
-
     <div class="name">Connection Error</div>
-
     <div class="bubble"></div>
-
    </div>`;
 
-  row.querySelector(".bubble").textContent=message;
+  row.querySelector(".bubble").textContent=error.message;
 
   $("messages").appendChild(row);
 
@@ -1427,9 +1791,7 @@ async function sendMessage(){
  }finally{
 
   busy=false;
-
   $("sendBtn").disabled=false;
-
   input.focus();
 
  }
@@ -1441,7 +1803,7 @@ function openSettings(){
  $("apiKey").value=getKey();
 
  $("rememberKey").checked=
-  !!localStorage.getItem("nova_api_key");
+ !!localStorage.getItem("nova_api_key");
 
  $("settingsModal").classList.add("show");
 
@@ -1458,19 +1820,13 @@ function saveKey(){
  const key=$("apiKey").value.trim();
 
  if(!key){
-
-  toast("Please enter an API key");
-
+  toast("Enter your API key");
   return;
-
  }
 
  if(!key.startsWith("gsk_")){
-
-  toast("This does not look like a Groq API key");
-
+  toast("Invalid Groq API key format");
   return;
-
  }
 
  if($("rememberKey").checked){
@@ -1510,7 +1866,7 @@ function removeKey(){
 function toggleKeyVisibility(){
 
  $("apiKey").type=
-  $("showKey").checked?"text":"password";
+ $("showKey").checked?"text":"password";
 
 }
 
@@ -1547,7 +1903,19 @@ $("prompt").addEventListener("input",function(){
 
  this.style.height="auto";
 
- this.style.height=Math.min(this.scrollHeight,150)+"px";
+ this.style.height=Math.min(this.scrollHeight,130)+"px";
+
+});
+
+$("medicalInput").addEventListener("keydown",e=>{
+
+ if(e.key==="Enter"){
+
+  e.preventDefault();
+
+  searchMedical();
+
+ }
 
 });
 
